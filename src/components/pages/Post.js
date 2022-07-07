@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
+
 function Item(props) {
   const { sx, ...other } = props;
   return (
@@ -70,6 +71,7 @@ const Post = () => {
           >
             <Item>
               {index + 1}.<h3>{post.title}</h3> <p> {post.body}</p>
+              <Link to={`/posts/${post.id}`}>Comments</Link>{" "}
             </Item>
           </Box>
         ) : null
