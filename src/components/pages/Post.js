@@ -1,18 +1,44 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { styled } from "@mui/material/styles";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+import PropTypes from "prop-types";
+function Item(props) {
+  const { sx, ...other } = props;
+  return (
+    <Box
+      sx={{
+        p: 1,
+        m: 1,
+        bgcolor: (theme) =>
+          theme.palette.mode === "dark" ? "#101010" : "grey.100",
+        color: (theme) =>
+          theme.palette.mode === "dark" ? "grey.300" : "grey.800",
+        border: "1px solid",
+        borderColor: (theme) =>
+          theme.palette.mode === "dark" ? "grey.800" : "grey.300",
+        borderRadius: 2,
+        fontSize: "0.875rem",
+        fontWeight: "500",
+        ...sx,
+      }}
+      {...other}
+    />
+  );
+}
+
+Item.propTypes = {
+  /**
+   * The system prop that allows defining system overrides as well as additional CSS styles.
+   */
+  sx: PropTypes.oneOfType([
+    PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.bool])
+    ),
+    PropTypes.func,
+    PropTypes.object,
+  ]),
+};
 
 const Post = () => {
   const [posts, setPost] = useState([]);
@@ -28,38 +54,26 @@ const Post = () => {
     console.log(result.data);
   };
   return (
-    <div>
-      <h1>POSTS</h1>
-      <Card
-        variant="outlined"
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-        }}
-      >
-        {posts.map((post, index) =>
-          post.userId == id ? (
-            <Box sx={{ width: "30%" }}>
-              <Grid
-                container
-                rowSpacing={3}
-                columnSpacing={{ xs: 3, sm: 2, md: 3 }}
-              >
-                <Grid
-                  item
-                  xs={30}
-                  style={{ width: "100px", textAlign: "center" }}
-                >
-                  <Item>
-                    <h2>{post.title}</h2> <p> {post.body}</p>
-                  </Item>
-                </Grid>
-              </Grid>
-            </Box>
-          ) : null
-        )}
-      </Card>
+    <div style={{ display: "flex", flexWrap: "wrap" }}>
+      {posts.map((post, index) =>
+        post.userId == id ? (
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              p: 1,
+              m: 1,
+              bgcolor: "background.paper",
+              maxWidth: 300,
+              borderRadius: 1,
+            }}
+          >
+            <Item>
+              {index + 1}.<h3>{post.title}</h3> <p> {post.body}</p>
+            </Item>
+          </Box>
+        ) : null
+      )}
     </div>
   );
 };
